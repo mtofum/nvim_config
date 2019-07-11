@@ -2,8 +2,6 @@
 1. 启动nvim，执行 :PlugInstall 安装插件
 1. 执行`sudo pip install neovim` 安装python支持
 1. 执行`sudo pip3 install neovim` 安装python3支持
-1. 执行`sudo pip install pynvim` 安装python支持
-1. 执行`sudo pip3 install pynvim` 安装python3支持
 
 # 安装ripgrep
 \< ubuntu 18.10
@@ -19,7 +17,7 @@ sudo dpkg -i ripgrep_11.0.1_amd64.deb
 sudo apt install ripgrep
 ```
 
-# 安装ccls
+#安装ccls
 安装clang, 根据自己的系统版本选择下载包的版本号:
 ```bash
 wget -c http://releases.llvm.org/8.0.0/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz
@@ -65,17 +63,10 @@ tar -Jxf node-v10.16.0-linux-x64.tar.xz .
 export PATH=$PATH:/usr/local/lib/nodejs/node-v10.16.0-linux-x64/bin
 ```
 
-## apt 安装yarn:
-```
-curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-sudo apt-get update && sudo apt-get install yarn
-```
-
 ## 安装node.js provider
 
 ```bash
-npm install -g neovim
+npm install neovim
 ```
 
 ## 检查安装情况
@@ -105,7 +96,7 @@ npm install -g neovim
 
 # 安装Bear：
 ```
-git clone --depth=1 https://github.com/rizsotto/Bear.git
+https://github.com/rizsotto/Bear.git
 cd Bear
 mkdir build
 cd build
