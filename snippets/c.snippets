@@ -1,0 +1,16 @@
+# init space
+snippet 0ini
+	if(NULL != ${1:pointer})
+	{
+		memset($1, 0, sizeof(${2:$1}));
+	}
+	else
+	{
+		return ${3:-1};
+	}
+#check none pointer
+snippet 0chk
+	if(NULL == ${1:pointer})
+	{
+		return ${2:-1};
+	}

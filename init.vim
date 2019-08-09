@@ -6,6 +6,7 @@ call plug#begin('~/.config/nvim/autoload')
 
 " Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
 Plug 'junegunn/vim-easy-align'
+Plug 'zxqfl/tabnine-vim'
 
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -89,7 +90,9 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 let g:UltiSnipsExpandTrigger="<c-tab>"
 "let g:UltiSnipsJumpForwardTrigger="<c-b>"
 "let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-
+"add my local snippets
+let g:UltiSnipsSnippetDirectories=["UltiSnips", "~/.config/nvim/snippets"]
+"
 "=========================vim-airline======================
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status}'])
@@ -103,7 +106,7 @@ map <C-=> :pyf ~/.vim/clang-format.py<cr>
 imap <C-=> <c-o>:pyf ~/.vim/clang-format.py<cr>
 
 "=====================neo_commenter================================
-vmap <C-/> <leader>c<space>
+nnoremap <C-/> <leader>c<space>
 
 "================vim-cpp-enhanced-highlight========================
 let g:cpp_class_scope_highlight = 1
@@ -190,8 +193,8 @@ let g:Lf_CommandMap = {'<C-k>': ['<Up>'], '<C-j>': ['<Down>']}
 let g:multi_cursor_use_default_mapping=0
 
 " Default mapping
-let g:multi_cursor_start_word_key      = 'w<C-n>' "conflict with nerdtree
-let g:multi_cursor_select_all_word_key = 'w<A-n>' "conflict with nerdtree
+let g:multi_cursor_start_word_key      = '<C-n>' "conflict with nerdtree
+let g:multi_cursor_select_all_word_key = '<A-n>' "conflict with nerdtree
 let g:multi_cursor_start_key           = 'g<C-n>' "default key map
 let g:multi_cursor_select_all_key      = 'g<A-n>' "default key map
 let g:multi_cursor_next_key            = '<C-n>'  "default key map
@@ -204,7 +207,7 @@ let g:multi_cursor_quit_key            = '<Esc>'  "default key map
 let g:gutentags_modules = ['ctags', 'gtags_cscope']
 
 " config project root markers.
-let g:gutentags_project_root = ['.root','.git', '.repo', 'compile_commands.json']
+let g:gutentags_project_root = ['.root','.git', 'compile_commands.json']
 
 " generate datebases in my cache directory, prevent gtags files polluting my project
 let g:gutentags_cache_dir = expand('~/.cache/tags')
