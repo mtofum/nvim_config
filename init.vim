@@ -207,12 +207,15 @@ let g:multi_cursor_quit_key            = '<Esc>'  "default key map
 let g:gutentags_modules = ['ctags', 'gtags_cscope']
 
 " config project root markers.
-let g:gutentags_project_root = ['.root','.git', 'compile_commands.json']
+let g:gutentags_project_root = ['.git', 'compile_commands.json']
 
 " generate datebases in my cache directory, prevent gtags files polluting my project
 let g:gutentags_cache_dir = expand('~/.cache/tags')
 
-" ctags parameters
+" not generate data base for these directory
+let g:gutentags_ctags_exclude = ['.ccls', '.git']
+let g:gutentags_exclude_project_root = ['.ccls', '.git']
+
 let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
 let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
 let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
