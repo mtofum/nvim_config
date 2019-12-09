@@ -213,8 +213,8 @@ let g:gutentags_project_root = ['.git', 'compile_commands.json']
 let g:gutentags_cache_dir = expand('~/.cache/tags')
 
 " not generate data base for these directory
-let g:gutentags_ctags_exclude = ['.ccls', '.git']
-let g:gutentags_exclude_project_root = ['.ccls', '.git']
+let g:gutentags_ctags_exclude = ['.ccls', '.ccls-cache', '.git']
+let g:gutentags_exclude_project_root = ['.ccls', '.ccls-cache', '.git']
 
 let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
 let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
