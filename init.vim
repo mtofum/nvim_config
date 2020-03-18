@@ -8,7 +8,7 @@ call plug#begin('~/.config/nvim/autoload')
 Plug 'junegunn/vim-easy-align'
 "Plug 'zxqfl/tabnine-vim'
 Plug 'voldikss/vim-floaterm'
-Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary!' }
+"Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary!' }
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'scrooloose/nerdcommenter'
@@ -20,6 +20,8 @@ Plug 'vim-airline/vim-airline'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-scripts/DoxygenToolkit.vim'
 Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
+Plug 'luochen1990/rainbow'
 Plug 'tpope/vim-surround'
 Plug 'lyuts/vim-rtags'
 Plug 'jiangmiao/auto-pairs'
@@ -89,8 +91,8 @@ let g:floaterm_type = 'floating'
 let g:floaterm_position = 'center'
 
 "====================vim-clap==============================
-nmap <Leader>ff :Clap git_files<CR>
-nmap <Leader>fg :Clap grep<CR>
+"nmap <Leader>ff :Clap git_files<CR>
+"nmap <Leader>fg :Clap grep<CR>
 
 "=========================snippet==========================
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
@@ -110,14 +112,16 @@ let g:doxygenToolkit_briefTag_funcName="yes"
 "=====================clang-format================================
 map <C-=> :pyf ~/.vim/clang-format.py<cr>
 imap <C-=> <c-o>:pyf ~/.vim/clang-format.py<cr>
-
 "=====================neo_commenter================================
-nnoremap <C-/> <leader>c<space>
+"map <C-/> <plug>NERDCommenterToggle
 
 "================vim-cpp-enhanced-highlight========================
 let g:cpp_class_scope_highlight = 1
 let g:cpp_concepts_highlight = 1
 let c_no_curly_error=1
+
+"================ rainbow ==========================================
+let g:rainbow_active = 1
 
 "================vim-easy-align========================
 " Start interactive EasyAlign in visual mode (e.g. vipga)
@@ -125,6 +129,18 @@ let c_no_curly_error=1
 "
 " " Start interactive EasyAlign for a motion/text object (e.g. gaip)
  nmap ga <Plug>(EasyAlign)
+
+"============================  Leader F  ==========================
+
+" search word under cursor, the pattern is treated as regex, and enter normal mode directly
+noremap <C-F> :<C-U><C-R>=printf("Leaderf! rg -e %s ", expand("<cword>"))<CR>
+" recall last search. If the result window is closed, reopen it.
+noremap go :<C-U>Leaderf! rg --stayOpen --recall<CR>
+"tag search
+noremap <leader>t :<C-U>Leaderf tag<CR>
+
+" C+j C+k to navigat search result
+let g:Lf_CommandMap = {'<C-k>': ['<Up>'], '<C-j>': ['<Down>']}
 
 "============================multiple-cursors======================
 let g:multi_cursor_use_default_mapping=0
