@@ -58,10 +58,10 @@ map <c-j> <c-w>j
 map <c-k> <c-w>k
 map <c-l> <c-w>l
 
-nmap <Leader>y "+y
-nmap <Leader>yy "+yy
-nmap <Leader>p "+p
-nmap <Leader>pp "0p
+map <Leader>yy "+y
+"nmap <Leader>yyy "+yy
+map <Leader>pp "+p
+
 nmap sv :vsp<CR>
 nmap sh :sp<CR>
 nmap <Leader>qq :q<CR>
