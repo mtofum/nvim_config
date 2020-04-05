@@ -64,6 +64,7 @@ map <Leader>pp "+p
 
 nmap sv :vsp<CR>
 nmap sh :sp<CR>
+nmap st :tabe %<CR>
 nmap <Leader>qq :q<CR>
 "use esc to exit insert mode in terminal-emulator
 tnoremap <Esc> <C-\><C-n>
