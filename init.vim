@@ -31,6 +31,8 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " gtag support
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'skywind3000/gutentags_plus'
+" rust support
+Plug 'rust-lang/rust.vim'
 
 " Initialize plugin system
 call plug#end()
@@ -48,6 +50,8 @@ set expandtab
 set shiftwidth=4
 set incsearch
 set mouse=a
+set encoding=utf-8
+set fileencodings=ucs-bom,utf-8,cp936,gbk,big5,latin1
 "set nowrap
 "remap leader key
 let mapleader=" "
