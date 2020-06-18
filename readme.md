@@ -42,7 +42,7 @@ sudo cmake --build Release --target install
 
 # 安装coc.vim
 
-## apt 安装node.js：
+## apt 安装node.js > ubuntu 18.04：
 ```
 sudo apt install npm
 ```
@@ -66,7 +66,7 @@ export PATH=$PATH:/usr/local/lib/nodejs/node-v10.16.0-linux-x64/bin
 ## 安装node.js provider
 
 ```bash
-npm install neovim
+npm install -g neovim
 ```
 
 ## 检查安装情况
