@@ -33,6 +33,7 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'skywind3000/gutentags_plus'
 " rust support
 Plug 'rust-lang/rust.vim'
+Plug 'vim-scripts/fcitx.vim'
 
 " Initialize plugin system
 call plug#end()
