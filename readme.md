@@ -17,7 +17,10 @@ sudo dpkg -i ripgrep_11.0.1_amd64.deb
 sudo apt install ripgrep
 ```
 
-#安装ccls
+# 安装lsp服务：
+
+
+## 安装ccls
 安装clang, 根据自己的系统版本选择下载包的版本号:
 ```bash
 wget -c http://releases.llvm.org/8.0.0/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz
@@ -38,6 +41,11 @@ cmake --build Release
 安装:
 ```
 sudo cmake --build Release --target install
+```
+
+## 安装cmake lsp：
+```
+sudo python3 -m pip install cmake-language-server
 ```
 
 # 安装coc.vim
@@ -73,9 +81,9 @@ npm install -g neovim
 
 进入nvim执行 :checkhealth 检查coc是否正确安装
 
-## 配置coc.vim的ccls支持
+## 配置coc.vim
 
-安装coc的ccls支持：
+安装coc的ccls和cmake支持：
 启动vim，执行：`:CocConfig`打开配置文件，添加以下内容：
 ```
 {
@@ -89,6 +97,16 @@ npm install -g neovim
            "directory": ".ccls-cache"
          }
        }
+    },
+    "cmake": {
+      "command": "cmake-language-server",
+      "filetypes": ["cmake"],
+      "rootPatterns": [
+        "build/"
+      ],
+      "initializationOptions": {
+        "buildDirectory": "build"
+      }
     }
   }
 }

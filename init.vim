@@ -28,9 +28,10 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'easymotion/vim-easymotion'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'vim-syntastic/syntastic'
 " gtag support
-Plug 'ludovicchabant/vim-gutentags'
-Plug 'skywind3000/gutentags_plus'
+"Plug 'ludovicchabant/vim-gutentags'
+"Plug 'skywind3000/gutentags_plus'
 " rust support
 Plug 'rust-lang/rust.vim'
 Plug 'vim-scripts/fcitx.vim'
@@ -57,6 +58,7 @@ set fileencodings=ucs-bom,utf-8,cp936,gbk,big5,latin1
 "remap leader key
 let mapleader=" "
 colorscheme monokai
+set ignorecase
 
 map <c-h> <c-w>h
 map <c-j> <c-w>j
