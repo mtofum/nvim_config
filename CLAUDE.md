@@ -16,6 +16,12 @@ This is a Neovim configuration repository using lazy.nvim as the plugin manager.
 - `:Lazy check` - Check for plugin updates
 - `:Lazy sync` - Run install, clean and update
 
+### LSP Management (Mason.nvim)
+- `:Mason` - Open Mason LSP installer interface
+- `:MasonInstall <server>` - Install specific LSP server
+- `:MasonUninstall <server>` - Uninstall LSP server
+- `:MasonUpdate` - Update all installed LSP servers
+
 ### LSP and Development
 - `:checkhealth` - Check Neovim health including LSP setup
 - `:LspInfo` - Display LSP client information
@@ -48,7 +54,7 @@ Uses lazy.nvim for plugin management with:
 - **Dependency Management**: Automatic handling of plugin dependencies
 
 Key plugins include:
-- **LSP**: nvim-lspconfig with support for clangd, pyright, ts_ls, rust_analyzer
+- **LSP**: mason.nvim + nvim-lspconfig with automatic server management
 - **Syntax**: nvim-treesitter for enhanced syntax highlighting
 - **File Management**: NERDTree with git integration
 - **Search**: Telescope for fuzzy finding
@@ -78,12 +84,17 @@ Language servers configured in `lua/plugin_configs/lsp.lua`:
 - Node.js and npm for LSP servers
 
 ### LSP Server Installation
-Language servers must be installed separately:
-- **clangd**: Usually comes with LLVM/Clang installation
-- **pyright**: `npm install -g pyright`
-- **bash-language-server**: `npm install -g bash-language-server`
-- **typescript-language-server**: `npm install -g typescript-language-server`
-- **rust-analyzer**: Install via rustup or package manager
+Mason.nvim automatically installs and manages LSP servers. The following servers are configured to auto-install:
+- **clangd** - C/C++ language server
+- **pyright** - Python language server  
+- **bashls** - Bash language server
+- **ts_ls** - TypeScript/JavaScript language server
+- **rust_analyzer** - Rust language server
+
+Manual installation (if needed):
+- Use `:Mason` to open the installer interface
+- Use `:MasonInstall <server_name>` to install specific servers
+- All servers are automatically configured through mason-lspconfig
 
 ### Additional Tools (from readme.md)
 - **Bear**: For generating compile_commands.json for C/C++ projects
@@ -101,6 +112,39 @@ Language servers must be installed separately:
 - General mappings in `lua/core/keymaps.lua`
 - LSP-specific mappings in `lua/plugin_configs/lsp.lua`
 - Plugin-specific mappings in individual plugin config files in `lua/plugins/`
+
+## Git Version Control
+
+This configuration is managed with Git and designed to be portable across different systems.
+
+### What's Tracked
+- **Core configuration files**: `init.lua`, `lua/core/`, `lua/plugins/`
+- **Plugin configurations**: `lua/plugin_configs/`
+- **Documentation**: `CLAUDE.md`
+- **Color schemes**: `colors/`
+- **Lock file**: `lazy-lock.json` (ensures consistent plugin versions)
+
+### What's Ignored (`.gitignore`)
+- **Plugin installations**: Plugins are automatically installed by lazy.nvim
+- **LSP servers**: Managed by mason.nvim
+- **Cache files**: `.netrwhist`, swap files, backup files
+- **System files**: `.DS_Store`, `desktop.ini`
+- **Logs and temporary files**: `*.log`, session files
+- **Personal/sensitive data**: `*.env`, `secrets.lua`
+
+### Sharing Configuration
+To use this configuration on a new system:
+1. Clone the repository: `git clone <repo-url> ~/.config/nvim`
+2. Start Neovim: `nvim`
+3. Lazy.nvim will automatically install all plugins
+4. Mason.nvim will automatically install LSP servers
+
+### Adding Changes
+```bash
+git add .              # Add all changes
+git commit -m "description"
+git push               # Sync to remote repository
+```
 
 ## File Structure Context
 This is a personal Neovim configuration located in `~/.config/nvim/`, making it the active Neovim configuration when the user runs `nvim`.
