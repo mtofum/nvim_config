@@ -1,78 +1,100 @@
--- Setup language servers with mason-lspconfig integration
+-- Setup language servers with safe loading
 local lspconfig = require('lspconfig')
-local mason_lspconfig = require('mason-lspconfig')
-
--- Default LSP server setup function
-local function default_setup(server_name)
-  lspconfig[server_name].setup {}
-end
 
 -- Custom server configurations
 local server_configs = {
-  -- Rust Language Server with custom settings
-  rust_analyzer = function()
-    lspconfig.rust_analyzer.setup {
-      settings = {
-        ['rust-analyzer'] = {
-          diagnostics = {
-            enable = true,
-          },
-        },
-      },
-    }
-  end,
+  -- C/C++ Language Server
+  clangd = {
+    cmd = {
+      "clangd",
+      "--background-index",
+      "--clang-tidy",
+      "--header-insertion=iwyu",
+      "--completion-style=detailed",
+      "--function-arg-placeholders",
+      "--fallback-style=llvm",
+    },
+  },
   
   -- Python Language Server
-  pyright = function()
-    lspconfig.pyright.setup {
-      settings = {
-        python = {
-          analysis = {
-            typeCheckingMode = "basic",
-          },
+  pyright = {
+    settings = {
+      python = {
+        analysis = {
+          typeCheckingMode = "basic",
         },
       },
-    }
-  end,
-  
-  -- C/C++ Language Server
-  clangd = function()
-    lspconfig.clangd.setup {
-      cmd = {
-        "clangd",
-        "--background-index",
-        "--clang-tidy",
-        "--header-insertion=iwyu",
-        "--completion-style=detailed",
-        "--function-arg-placeholders",
-        "--fallback-style=llvm",
-      },
-    }
-  end,
+    },
+  },
   
   -- Bash Language Server
-  bashls = function()
-    lspconfig.bashls.setup {}
-  end,
+  bashls = {},
   
   -- TypeScript Language Server
-  ts_ls = function()
-    lspconfig.ts_ls.setup {}
-  end,
+  ts_ls = {},
+  
+  -- Rust Language Server with custom settings
+  rust_analyzer = {
+    settings = {
+      ['rust-analyzer'] = {
+        diagnostics = {
+          enable = true,
+        },
+      },
+    },
+  },
 }
 
--- Setup handlers for mason-lspconfig
-mason_lspconfig.setup_handlers {
-  -- Default handler for all servers
-  default_setup,
+-- Function to setup a single LSP server
+local function setup_server(server_name, config)
+  local server_available = lspconfig[server_name] ~= nil
+  if server_available then
+    lspconfig[server_name].setup(config or {})
+    print("✓ LSP server configured:", server_name)
+  else
+    print("✗ LSP server not available:", server_name)
+  end
+end
+
+-- Try to use mason-lspconfig if available, otherwise setup manually
+local mason_lspconfig_ok, mason_lspconfig = pcall(require, 'mason-lspconfig')
+
+if mason_lspconfig_ok and mason_lspconfig.setup_handlers then
+  print("🔧 Using mason-lspconfig for LSP setup")
   
-  -- Custom handlers for specific servers
-  ["rust_analyzer"] = server_configs.rust_analyzer,
-  ["pyright"] = server_configs.pyright,
-  ["clangd"] = server_configs.clangd,
-  ["bashls"] = server_configs.bashls,
-  ["ts_ls"] = server_configs.ts_ls,
-}
+  -- Setup handlers for mason-lspconfig
+  mason_lspconfig.setup_handlers {
+    -- Default handler for all servers
+    function(server_name)
+      local config = server_configs[server_name] or {}
+      setup_server(server_name, config)
+    end,
+    
+    -- Custom handlers for specific servers
+    ["clangd"] = function()
+      setup_server("clangd", server_configs.clangd)
+    end,
+    ["pyright"] = function()
+      setup_server("pyright", server_configs.pyright)
+    end,
+    ["bashls"] = function()
+      setup_server("bashls", server_configs.bashls)
+    end,
+    ["ts_ls"] = function()
+      setup_server("ts_ls", server_configs.ts_ls)
+    end,
+    ["rust_analyzer"] = function()
+      setup_server("rust_analyzer", server_configs.rust_analyzer)
+    end,
+  }
+else
+  print("🔧 mason-lspconfig not available, setting up LSP servers manually")
+  
+  -- Setup each server manually
+  for server_name, config in pairs(server_configs) do
+    setup_server(server_name, config)
+  end
+end
 
 
 -- Global mappings.
