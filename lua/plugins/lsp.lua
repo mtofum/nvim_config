@@ -17,24 +17,10 @@ return {
     end,
   },
 
-  -- LSP配置
-  {
-    "neovim/nvim-lspconfig",
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-      "williamboman/mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
-    },
-    config = function()
-      -- 直接加载LSP配置，它会自动处理mason-lspconfig的可用性
-      require("plugin_configs.lsp")
-    end,
-  },
-
   -- Mason与lspconfig的桥接
   {
     "williamboman/mason-lspconfig.nvim",
-    lazy = true,
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       "williamboman/mason.nvim",
     },
@@ -51,6 +37,20 @@ return {
         -- 自动设置LSP服务器
         automatic_installation = true,
       })
+    end,
+  },
+
+  -- LSP配置
+  {
+    "neovim/nvim-lspconfig",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = {
+      "williamboman/mason.nvim",
+      "williamboman/mason-lspconfig.nvim",
+    },
+    config = function()
+      -- 直接加载LSP配置，它会自动处理mason-lspconfig的可用性
+      require("plugin_configs.lsp")
     end,
   },
 }

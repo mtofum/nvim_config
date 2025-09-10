@@ -50,9 +50,6 @@ local function setup_server(server_name, config)
   local server_available = lspconfig[server_name] ~= nil
   if server_available then
     lspconfig[server_name].setup(config or {})
-    print("✓ LSP server configured:", server_name)
-  else
-    print("✗ LSP server not available:", server_name)
   end
 end
 
@@ -60,8 +57,6 @@ end
 local mason_lspconfig_ok, mason_lspconfig = pcall(require, 'mason-lspconfig')
 
 if mason_lspconfig_ok and mason_lspconfig.setup_handlers then
-  print("🔧 Using mason-lspconfig for LSP setup")
-  
   -- Setup handlers for mason-lspconfig
   mason_lspconfig.setup_handlers {
     -- Default handler for all servers
@@ -88,8 +83,6 @@ if mason_lspconfig_ok and mason_lspconfig.setup_handlers then
     end,
   }
 else
-  print("🔧 mason-lspconfig not available, setting up LSP servers manually")
-  
   -- Setup each server manually
   for server_name, config in pairs(server_configs) do
     setup_server(server_name, config)
