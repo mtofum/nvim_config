@@ -57,16 +57,6 @@ return {
     },
   },
 
-  -- 代码片段
-  {
-    "SirVer/ultisnips",
-    event = "InsertEnter",
-    config = function()
-      vim.g.UltiSnipsExpandTrigger = "<c-tab>"
-      vim.g.UltiSnipsSnippetDirectories = { "UltiSnips", "~/.config/nvim/snippets" }
-    end,
-  },
-
   -- 语法检查
   {
     "vim-syntastic/syntastic",
@@ -80,6 +70,22 @@ return {
     config = function()
       vim.g.DoxygenToolkit_authorName = "Tofu Mo"
       vim.g.doxygenToolkit_briefTag_funcName = "yes"
+    end,
+  },
+
+  -- GitHub Copilot
+  {
+    "github/copilot.vim",
+    event = "VeryLazy",
+    config = function()
+      -- 启用 Tab 补全
+      vim.g.copilot_no_tab_map = false
+      vim.g.copilot_assume_mapped = false
+      -- 或者使用自定义 Tab 映射
+      vim.cmd([[
+        imap <silent><script><expr> <Tab> copilot#Accept("\<Tab>")
+        let g:copilot_no_tab_map = v:true
+      ]])
     end,
   },
 }

@@ -1,5 +1,6 @@
--- Setup language servers with safe loading
-local lspconfig = require('lspconfig')
+-- Setup language servers using new vim.lsp.config API
+-- Check if we have the new API (nvim 0.11+) or fall back to lspconfig
+local has_new_api = vim.lsp.config ~= nil
 
 -- Custom server configurations
 local server_configs = {
@@ -15,7 +16,7 @@ local server_configs = {
       "--fallback-style=llvm",
     },
   },
-  
+
   -- Python Language Server
   pyright = {
     settings = {
@@ -26,13 +27,13 @@ local server_configs = {
       },
     },
   },
-  
+
   -- Bash Language Server
   bashls = {},
-  
+
   -- TypeScript Language Server
   ts_ls = {},
-  
+
   -- Rust Language Server with custom settings
   rust_analyzer = {
     settings = {
@@ -47,13 +48,21 @@ local server_configs = {
 
 -- Function to setup a single LSP server
 local function setup_server(server_name, config)
-  local server_available = lspconfig[server_name] ~= nil
-  if server_available then
-    lspconfig[server_name].setup(config or {})
+  if has_new_api then
+    -- Use new API for nvim 0.11+
+    if vim.lsp.config[server_name] then
+      vim.lsp.config[server_name].setup(config or {})
+    end
+  else
+    -- Fall back to lspconfig for older versions
+    local lspconfig_ok, lspconfig = pcall(require, 'lspconfig')
+    if lspconfig_ok and lspconfig[server_name] then
+      lspconfig[server_name].setup(config or {})
+    end
   end
 end
 
--- Try to use mason-lspconfig if available, otherwise setup manually
+-- Try to use mason-lspconfig if available
 local mason_lspconfig_ok, mason_lspconfig = pcall(require, 'mason-lspconfig')
 
 if mason_lspconfig_ok and mason_lspconfig.setup_handlers then
@@ -64,7 +73,7 @@ if mason_lspconfig_ok and mason_lspconfig.setup_handlers then
       local config = server_configs[server_name] or {}
       setup_server(server_name, config)
     end,
-    
+
     -- Custom handlers for specific servers
     ["clangd"] = function()
       setup_server("clangd", server_configs.clangd)
@@ -127,4 +136,3 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end, opts)
   end,
 })
-
