@@ -1,6 +1,9 @@
--- Setup language servers using new vim.lsp.config API
--- Check if we have the new API (nvim 0.11+) or fall back to lspconfig
-local has_new_api = vim.lsp.config ~= nil
+-- Setup language servers
+-- For now, we'll use the traditional lspconfig approach until the new API is more stable
+local lspconfig_ok, lspconfig = pcall(require, 'lspconfig')
+if not lspconfig_ok then
+  return
+end
 
 -- Custom server configurations
 local server_configs = {
@@ -48,18 +51,22 @@ local server_configs = {
 
 -- Function to setup a single LSP server
 local function setup_server(server_name, config)
-  if has_new_api then
-    -- Use new API for nvim 0.11+
-    if vim.lsp.config[server_name] then
-      vim.lsp.config[server_name].setup(config or {})
+  -- Suppress deprecation warning temporarily
+  local notify = vim.notify
+  vim.notify = function(msg, level, opts)
+    if msg:match("deprecated") and msg:match("lspconfig") then
+      return
     end
-  else
-    -- Fall back to lspconfig for older versions
-    local lspconfig_ok, lspconfig = pcall(require, 'lspconfig')
-    if lspconfig_ok and lspconfig[server_name] then
-      lspconfig[server_name].setup(config or {})
-    end
+    return notify(msg, level, opts)
   end
+
+  -- Setup the server using traditional method
+  if lspconfig[server_name] then
+    lspconfig[server_name].setup(config or {})
+  end
+
+  -- Restore original notify
+  vim.notify = notify
 end
 
 -- Try to use mason-lspconfig if available
