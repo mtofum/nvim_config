@@ -73,9 +73,21 @@ local function setup_server(server_name, config)
     return notify(msg, level, opts)
   end
 
-  -- Setup the server using traditional method
-  if lspconfig[server_name] then
-    lspconfig[server_name].setup(config or {})
+  -- Setup the server using traditional method with error handling
+  -- Wrap the entire access and setup in pcall to catch __index errors
+  local success, err = pcall(function()
+    local server = lspconfig[server_name]
+    if server and server.setup then
+      server.setup(config or {})
+    end
+  end)
+
+  if not success then
+    -- Silently ignore "server not found" errors - these happen when
+    -- mason-lspconfig tries to setup servers that aren't installed yet
+    if err and not (err:match("Cannot access configuration") or err:match("__index")) then
+      print(string.format("[LSP] Setup error for '%s': %s", server_name, err))
+    end
   end
 
   -- Restore original notify
