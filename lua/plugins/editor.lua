@@ -84,7 +84,7 @@ return {
           enabled = true,
           auto_trigger = true,
           keymap = {
-            accept = "<Tab>",
+            accept = "<C-j>",  -- Changed from <Tab> to avoid conflict with indentation
             accept_word = false,
             accept_line = false,
             next = "<M-]>",
@@ -231,8 +231,8 @@ return {
         -- 映射
         mappings = {
           complete = {
-            detail = "Use @<Tab> or /<Tab> for options.",
-            insert = "<Tab>",
+            detail = "Use @<C-Space> or /<C-Space> for options.",
+            insert = "<C-Space>",
           },
           close = {
             normal = "q",

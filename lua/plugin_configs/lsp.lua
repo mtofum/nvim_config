@@ -18,8 +18,7 @@ local server_configs = {
       "--clang-tidy",
       "--header-insertion=iwyu",
       "--completion-style=detailed",
-      "--function-arg-placeholders",
-      "--fallback-style=llvm",
+      "--fallback-style=google",  -- Use Google C++ style
     },
   },
 
@@ -133,6 +132,36 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- Buffer local mappings.
     -- See `:help vim.lsp.*` for documentation on any of the below functions
     local opts = { buffer = ev.buf }
+
+    -- Smart = formatting: Use LSP formatting instead of native Vim indenting
+    vim.keymap.set('v', '=', function()
+      -- Get the visual selection range
+      local start_pos = vim.fn.getpos("'<")
+      local end_pos = vim.fn.getpos("'>")
+      local start_line = start_pos[2]
+      local end_line = end_pos[2]
+
+      -- Format only the selected range
+      vim.lsp.buf.format({
+        async = false,
+        range = {
+          start = { start_line, 0 },
+          ["end"] = { end_line, 0 },
+        }
+      })
+    end, vim.tbl_extend('force', opts, { desc = 'Format selection (LSP)' }))
+
+    vim.keymap.set('n', '==', function()
+      -- Format only current line
+      local line = vim.fn.line('.')
+      vim.lsp.buf.format({
+        async = false,
+        range = {
+          start = { line, 0 },
+          ["end"] = { line, 0 },
+        }
+      })
+    end, vim.tbl_extend('force', opts, { desc = 'Format current line (LSP)' }))
 
     -- Use Telescope for LSP navigation (provides better UI and auto-closes)
     local telescope_builtin = require('telescope.builtin')
