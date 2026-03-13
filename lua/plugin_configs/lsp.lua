@@ -1,7 +1,7 @@
 -- Setup language servers
--- For now, we'll use the traditional lspconfig approach until the new API is more stable
-local lspconfig_ok, lspconfig = pcall(require, 'lspconfig')
-if not lspconfig_ok then
+-- Load server definitions directly to avoid the deprecated `require('lspconfig')[server]` path.
+local lspconfig_configs_ok, lspconfig_configs = pcall(require, 'lspconfig.configs')
+if not lspconfig_configs_ok then
   return
 end
 
@@ -51,6 +51,18 @@ local server_configs = {
   },
 }
 
+local function get_server(server_name)
+  if not lspconfig_configs[server_name] then
+    local ok, config_def = pcall(require, 'lspconfig.configs.' .. server_name)
+    if not ok then
+      return nil, config_def
+    end
+    lspconfig_configs[server_name] = config_def
+  end
+
+  return lspconfig_configs[server_name]
+end
+
 -- Function to setup a single LSP server
 local function setup_server(server_name, config)
   -- Debug: Track and warn about duplicate setup calls
@@ -63,19 +75,13 @@ local function setup_server(server_name, config)
       server_name, setup_count[server_name]))
   end
 
-  -- Suppress deprecation warning temporarily
-  local notify = vim.notify
-  vim.notify = function(msg, level, opts)
-    if msg:match("deprecated") and msg:match("lspconfig") then
-      return
-    end
-    return notify(msg, level, opts)
-  end
-
-  -- Setup the server using traditional method with error handling
-  -- Wrap the entire access and setup in pcall to catch __index errors
+  -- Load the server config and set it up without hitting lspconfig's deprecated lookup path.
   local success, err = pcall(function()
-    local server = lspconfig[server_name]
+    local server, load_err = get_server(server_name)
+    if not server then
+      error(load_err)
+    end
+
     if server and server.setup then
       server.setup(config or {})
     end
@@ -84,13 +90,14 @@ local function setup_server(server_name, config)
   if not success then
     -- Silently ignore "server not found" errors - these happen when
     -- mason-lspconfig tries to setup servers that aren't installed yet
-    if err and not (err:match("Cannot access configuration") or err:match("__index")) then
+    if err and not (
+      err:match("Cannot access configuration")
+      or err:match("__index")
+      or err:match("module 'lspconfig%.configs%..-' not found")
+    ) then
       print(string.format("[LSP] Setup error for '%s': %s", server_name, err))
     end
   end
-
-  -- Restore original notify
-  vim.notify = notify
 end
 
 -- Try to use mason-lspconfig if available
