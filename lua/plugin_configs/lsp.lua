@@ -5,9 +5,6 @@ if not lspconfig_configs_ok then
   return
 end
 
--- Debug: Track setup calls to detect duplicates
-local setup_count = {}
-
 -- Custom server configurations
 local server_configs = {
   -- C/C++ Language Server
@@ -65,16 +62,6 @@ end
 
 -- Function to setup a single LSP server
 local function setup_server(server_name, config)
-  -- Debug: Track and warn about duplicate setup calls
-  setup_count[server_name] = (setup_count[server_name] or 0) + 1
-
-  if setup_count[server_name] == 1 then
-    print(string.format("[LSP] Setting up '%s'", server_name))
-  else
-    print(string.format("[LSP WARNING] '%s' setup called %d times! This causes duplicate definitions.",
-      server_name, setup_count[server_name]))
-  end
-
   -- Load the server config and set it up without hitting lspconfig's deprecated lookup path.
   local success, err = pcall(function()
     local server, load_err = get_server(server_name)
