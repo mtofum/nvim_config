@@ -5,8 +5,8 @@ local opt = vim.opt
 opt.number = true
 opt.encoding = "utf-8"
 opt.fileencodings = "ucs-bom,utf-8,cp936,gbk,big5,latin1"
-opt.fileformat = "unix"       -- Use Unix line endings (LF) instead of Windows (CRLF)
-opt.fileformats = "unix"  -- Prefer Unix, but can read DOS files
+-- opt.fileformat = "unix"       -- Disabled: Let Neovim auto-detect file format
+opt.fileformats = "unix,dos,mac"  -- Support all formats and preserve original format
 opt.termguicolors = true
 vim.cmd("syntax on")
 

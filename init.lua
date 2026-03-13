@@ -12,3 +12,6 @@ require("core.autocmds")
 
 -- 初始化lazy.nvim和插件
 require("core.lazy")
+
+-- Disable putting the replaced text into the default register
+vim.keymap.set('x', 'p', '"_dP', { noremap = true, silent = true })

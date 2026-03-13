@@ -2,20 +2,20 @@
 local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 
--- 保存时自动删除行末空格
-autocmd("BufWritePre", {
-  pattern = "*",
-  callback = function()
-    -- 删除行末尾的空格
-    -- 保存当前光标位置
-    local cursor_pos = vim.api.nvim_win_get_cursor(0)
-    -- 删除所有行末的空白字符（空格和制表符）
-    vim.cmd([[%s/\s\+$//e]])
-    -- 恢复光标位置
-    pcall(vim.api.nvim_win_set_cursor, 0, cursor_pos)
-  end,
-  group = augroup("AutoCleanup", { clear = true })
-})
+-- 保存时自动删除行末空格 (已禁用以保持文件原样)
+-- autocmd("BufWritePre", {
+--   pattern = "*",
+--   callback = function()
+--     -- 删除行末尾的空格
+--     -- 保存当前光标位置
+--     local cursor_pos = vim.api.nvim_win_get_cursor(0)
+--     -- 删除所有行末的空白字符（空格和制表符）
+--     vim.cmd([[%s/\s\+$//e]])
+--     -- 恢复光标位置
+--     pcall(vim.api.nvim_win_set_cursor, 0, cursor_pos)
+--   end,
+--   group = augroup("AutoCleanup", { clear = true })
+-- })
 
 -- 设备树文件特定设置 (.dts, .dtsi)
 autocmd("FileType", {
