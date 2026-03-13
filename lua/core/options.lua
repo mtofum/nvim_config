@@ -23,8 +23,12 @@ opt.incsearch = true
 opt.ignorecase = true
 
 -- 折叠设置
+opt.foldcolumn = "1"
 opt.foldlevel = 99
-opt.foldmethod = "syntax"
+opt.foldlevelstart = 99
+opt.foldenable = true
+opt.foldmethod = "manual"
+opt.foldexpr = ""
 
 -- 状态栏设置
 opt.laststatus = 2

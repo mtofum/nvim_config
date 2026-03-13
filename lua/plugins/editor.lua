@@ -57,6 +57,55 @@ return {
     },
   },
 
+  -- 智能折叠
+  {
+    "kevinhwang91/nvim-ufo",
+    event = { "BufReadPost", "BufNewFile" },
+    dependencies = {
+      "kevinhwang91/promise-async",
+    },
+    keys = {
+      {
+        "zR",
+        function()
+          require("ufo").openAllFolds()
+        end,
+        desc = "Open all folds",
+      },
+      {
+        "zM",
+        function()
+          require("ufo").closeAllFolds()
+        end,
+        desc = "Close all folds",
+      },
+      {
+        "zr",
+        function()
+          require("ufo").openFoldsExceptKinds()
+        end,
+        desc = "Open folds except kinds",
+      },
+      {
+        "zm",
+        function()
+          require("ufo").closeFoldsWith()
+        end,
+        desc = "Close folds with level",
+      },
+      {
+        "zp",
+        function()
+          require("ufo").peekFoldedLinesUnderCursor()
+        end,
+        desc = "Peek folded lines",
+      },
+    },
+    config = function()
+      require("plugin_configs.folding")
+    end,
+  },
+
   -- 语法检查
   {
     "vim-syntastic/syntastic",

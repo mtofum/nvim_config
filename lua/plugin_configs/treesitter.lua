@@ -22,9 +22,4 @@ require'nvim-treesitter.configs'.setup {
     enable = true
   }
 }
--- 开启 Folding
-vim.wo.foldmethod = 'expr'
-vim.wo.foldexpr = 'nvim_treesitter#foldexpr()'
--- 默认不要折叠
--- https://stackoverflow.com/questions/8316139/how-to-set-the-default-to-unfolded-when-you-open-a-file
-vim.wo.foldlevel = 99
+-- Folding 由 nvim-ufo 统一接管，Treesitter 仅作为 provider 使用

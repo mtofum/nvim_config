@@ -48,6 +48,12 @@ local server_configs = {
   },
 }
 
+local default_capabilities = vim.lsp.protocol.make_client_capabilities()
+default_capabilities.textDocument.foldingRange = {
+  dynamicRegistration = false,
+  lineFoldingOnly = true,
+}
+
 local function get_server(server_name)
   if not lspconfig_configs[server_name] then
     local ok, config_def = pcall(require, 'lspconfig.configs.' .. server_name)
@@ -70,7 +76,12 @@ local function setup_server(server_name, config)
     end
 
     if server and server.setup then
-      server.setup(config or {})
+      local merged_config = vim.tbl_deep_extend(
+        "force",
+        { capabilities = default_capabilities },
+        config or {}
+      )
+      server.setup(merged_config)
     end
   end)
 
