@@ -57,6 +57,15 @@ return {
     },
   },
 
+  -- IBus输入法自动切换
+  {
+    "kevinhwang91/nvim-ibus-sw",
+    event = "InsertEnter",
+    config = function()
+      require("ibus-sw").setup()
+    end,
+  },
+
   -- 智能折叠
   {
     "kevinhwang91/nvim-ufo",
